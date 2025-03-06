@@ -262,6 +262,28 @@ public class CountryLab
         }
     }
 
+    private static void writeCountOfCountries(final List<String> countriesList,
+                                              final Path dataPath)
+    {
+        final long countOfCountries = filteredStream(countriesList)
+                .count();
+
+        try
+        {
+            Files.writeString(dataPath,
+                              "\n------Count of countries-----\n",
+                              StandardOpenOption.CREATE,
+                              StandardOpenOption.APPEND);
+            Files.writeString(dataPath,
+                        countOfCountries + "\n",
+                        StandardOpenOption.CREATE,
+                        StandardOpenOption.APPEND);
+        }
+        catch(final IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 
 }
