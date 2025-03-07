@@ -87,7 +87,7 @@ public class CountryLab
         try
         {
             Files.writeString(dataPath,
-                              "-----Country names longer than 10 characters-----\n",
+                              "Country names longer than 10 characters:\n",
                               StandardOpenOption.TRUNCATE_EXISTING);
             Files.write(dataPath,
                         longCountryNames,
@@ -134,7 +134,7 @@ public class CountryLab
         try
         {
             Files.writeString(dataPath,
-                              "\n-----Country names that start with \"A\"-----\n",
+                              "\nCountry names starting with 'A':\n",
                               StandardOpenOption.CREATE,
                               StandardOpenOption.APPEND);
             Files.write(dataPath,

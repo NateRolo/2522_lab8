@@ -6,7 +6,7 @@ import java.util.List;
 
 public class CountryLabTest {
 
-    Path matchesDir = Paths.get("matches");
+    Path matchesDir = Paths.get("src","res","matches");
     Path dataFile = matchesDir.resolve("data.txt");
 
     @BeforeEach
