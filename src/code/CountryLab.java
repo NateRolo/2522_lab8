@@ -1,9 +1,6 @@
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class CountryLab
@@ -60,6 +57,12 @@ public class CountryLab
                                 dataPath);
         writeCountriesToCharacterCount(countriesList,
                                 dataPath);
+        writeCountriesWithMoreThanOneWord(countriesList,
+                                          dataPath);
+        writeTrueIfNameStartsWithZ(countriesList,
+                                   dataPath);
+        writeAllNamesLongerThan3(countriesList,
+                                 dataPath);
     }
 
     private static Stream<String> filteredStream(final List<String> list)
@@ -74,7 +77,7 @@ public class CountryLab
     }
 
     private static void writeLongCountryNames(final List<String> countriesList,
-                                              final Path dataPath) throws IOException
+                                              final Path dataPath)
     {
         final List<String> longCountryNames;
 
@@ -98,7 +101,7 @@ public class CountryLab
     }
 
     private static void writeShortCountryNames(final List<String> countriesList,
-                                               final Path dataPath) throws IOException
+                                               final Path dataPath)
     {
         final List<String> shortCountryNames;
 
@@ -123,7 +126,7 @@ public class CountryLab
     }
 
     private static void writeCountriesStartingWithA(final List<String> countriesList,
-                                                    final Path dataPath) throws IOException
+                                                    final Path dataPath)
     {
         final List<String> startsWithA = filteredStream(countriesList)
                 .filter(str->str.startsWith("A"))
@@ -146,7 +149,7 @@ public class CountryLab
     }
 
     private static void writeCountriesEndingWithLand(final List<String> countriesList,
-                                                     final Path dataPath) throws IOException
+                                                     final Path dataPath)
     {
         final List<String> endsWithLand = filteredStream(countriesList)
                 .filter(str->
@@ -173,7 +176,7 @@ public class CountryLab
     }
 
     private static void writeCountriesThatContainUnited(final List<String> countriesList,
-                                                        final Path dataPath) throws IOException
+                                                        final Path dataPath)
     {
         final List<String> containsUnited = filteredStream(countriesList)
                 .filter(str->str.contains("United"))
@@ -196,7 +199,7 @@ public class CountryLab
     }
 
     private static void writeCountriesInAscendingOrder(final List<String> countriesList,
-                                                       final Path dataPath) throws IOException
+                                                       final Path dataPath)
     {
         final List<String> ascendingOrder = filteredStream(countriesList)
                 .sorted()
@@ -274,13 +277,10 @@ public class CountryLab
         try
         {
             Files.writeString(dataPath,
-                              "\n------Count of countries-----\n",
+                              "\n------Count of countries-----\n" +
+                              countOfCountries,
                               StandardOpenOption.CREATE,
                               StandardOpenOption.APPEND);
-            Files.writeString(dataPath,
-                        countOfCountries + "\n",
-                        StandardOpenOption.CREATE,
-                        StandardOpenOption.APPEND);
         }
         catch(final IOException e)
         {
@@ -292,17 +292,19 @@ public class CountryLab
     private static void writeLongestCountryName(final List<String> countriesList,
                                               final Path dataPath)
     {
-        final Optional<String> longestCountryName = filteredStream(countriesList)
-                .max(Comparator.comparingInt(String::length));
+        final int longestCountryNameLength = filteredStream(countriesList)
+                .mapToInt(String::length)
+                .max()
+                .getAsInt();
 
+        final List<String> longestCountryName = filteredStream(countriesList)
+                .filter(str->str.length() == longestCountryNameLength)
+                .toList();
         try
         {
             Files.writeString(dataPath,
-                              "\n------Longest country name-----\n",
-                              StandardOpenOption.CREATE,
-                              StandardOpenOption.APPEND);
-            Files.writeString(dataPath,
-                              longestCountryName.toString(),
+                              "\n------Longest country names-----\n" +
+                              longestCountryName,
                               StandardOpenOption.CREATE,
                               StandardOpenOption.APPEND);
         }
@@ -316,17 +318,19 @@ public class CountryLab
     private static void writeShortestCountryName(final List<String> countriesList,
                                                 final Path dataPath)
     {
-        final Optional<String> shortestCountryName = filteredStream(countriesList)
-                .min(Comparator.comparingInt(String::length));
+        final int shortestCountryNameLength = filteredStream(countriesList)
+                .mapToInt(String::length)
+                .min()
+                .getAsInt();
 
+        final List<String> longestCountryName = filteredStream(countriesList)
+                .filter(str->str.length() == shortestCountryNameLength)
+                .toList();
         try
         {
             Files.writeString(dataPath,
-                              "\n------Shortest country name-----\n",
-                              StandardOpenOption.CREATE,
-                              StandardOpenOption.APPEND);
-            Files.writeString(dataPath,
-                              shortestCountryName.toString(),
+                              "\n------Shortest country names-----\n" +
+                              longestCountryName,
                               StandardOpenOption.CREATE,
                               StandardOpenOption.APPEND);
         }
@@ -340,16 +344,13 @@ public class CountryLab
                                               final Path dataPath)
     {
         final List<String> countriesInUpper = filteredStream(countriesList)
-                .map(str->str.toUpperCase())
+                .map(String::toUpperCase)
                 .toList();
         try
         {
             Files.writeString(dataPath,
-                              "\n------Countries in uppercase-----\n",
-                              StandardOpenOption.CREATE,
-                              StandardOpenOption.APPEND);
-            Files.writeString(dataPath,
-                              countriesInUpper.toString(),
+                              "\n------Countries in uppercase-----\n" +
+                              countriesInUpper,
                               StandardOpenOption.CREATE,
                               StandardOpenOption.APPEND);
         }
@@ -363,7 +364,24 @@ public class CountryLab
     private static void writeCountriesWithMoreThanOneWord(final List<String> countriesList,
                                                           final Path dataPath)
     {
-        //step 13
+        final List<String> countriesWithMoreThanOneWord = filteredStream(countriesList)
+                .filter(str->str.trim().contains(" "))
+                .toList();
+        try
+        {
+            Files.writeString(dataPath,
+                              "\n------Countries with more than one word------\n",
+                              StandardOpenOption.CREATE,
+                              StandardOpenOption.APPEND);
+            Files.write(dataPath,
+                        countriesWithMoreThanOneWord,
+                        StandardOpenOption.CREATE,
+                        StandardOpenOption.APPEND);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private static void writeCountriesToCharacterCount(final List<String> countriesList,
@@ -389,6 +407,46 @@ public class CountryLab
         }
     }
 
+    private static void writeTrueIfNameStartsWithZ(final List<String> countriesList,
+                                                   final Path dataPath)
+    {
+        final boolean countryStartsWithZ = filteredStream(countriesList)
+                .anyMatch(str->str.startsWith("Z"));
+
+        try
+        {
+            Files.writeString(dataPath,
+                              "\n------Country starts with Z-----\n" +
+                              countryStartsWithZ,
+                              StandardOpenOption.CREATE,
+                              StandardOpenOption.APPEND);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+    private static void writeAllNamesLongerThan3(final List<String> countriesList,
+                                                 final Path dataPath)
+    {
+        final boolean allNamesLongerThan3 = filteredStream(countriesList)
+                .allMatch(str->str.length()>3);
+
+        try
+        {
+            Files.writeString(dataPath,
+                              "\n-----All countries longer than 3------\n" +
+                              allNamesLongerThan3,
+                              StandardOpenOption.CREATE,
+                              StandardOpenOption.APPEND);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 
 
