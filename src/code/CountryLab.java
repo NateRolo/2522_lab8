@@ -3,8 +3,26 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Stream;
 
+
+/**
+ * This program processes a list of country names from a text file and
+ * performs various operations, such as filtering, sorting, and analyzing
+ * country names, and writes the results to an output file.
+ *
+ * @author Valley B
+ * @author Nathan O
+ * @version 1.0 2025
+ */
 public class CountryLab
 {
+    /**
+     * Main entry point for the program. Reads country names from a file,
+     * ensures output directories exist, and calls methods to process
+     * and write filtered data.
+     *
+     * @param args Command-line arguments (not used).
+     * @throws IOException If an error occurs while reading or writing files.
+     */
     public static void main(final String[] args) throws IOException
     {
         final Path countriesPath;
@@ -65,6 +83,12 @@ public class CountryLab
                                  dataPath);
     }
 
+    /*
+     * Filters a list of country names by removing null and blank entries.
+     *
+     * @param list List of country names.
+     * @return A stream of filtered country names.
+     */
     private static Stream<String> filteredStream(final List<String> list)
     {
         final Stream<String> filteredStream;
@@ -76,6 +100,9 @@ public class CountryLab
         return filteredStream;
     }
 
+    /*
+     * Writes country names longer than 10 characters to the output file.
+     */
     private static void writeLongCountryNames(final List<String> countriesList,
                                               final Path dataPath)
     {
@@ -100,6 +127,9 @@ public class CountryLab
         }
     }
 
+    /*
+     * Writes country names shorter than 5 characters to the output file.
+     */
     private static void writeShortCountryNames(final List<String> countriesList,
                                                final Path dataPath)
     {
@@ -125,6 +155,9 @@ public class CountryLab
         }
     }
 
+    /*
+     * Writes country names that start with 'A' to the output file.
+     */
     private static void writeCountriesStartingWithA(final List<String> countriesList,
                                                     final Path dataPath)
     {
@@ -148,6 +181,9 @@ public class CountryLab
         }
     }
 
+    /*
+     * Writes country names that end with "land" to the output file.
+     */
     private static void writeCountriesEndingWithLand(final List<String> countriesList,
                                                      final Path dataPath)
     {
@@ -175,6 +211,9 @@ public class CountryLab
         }
     }
 
+    /*
+     * Writes country names containing "United" to the output file.
+     */
     private static void writeCountriesThatContainUnited(final List<String> countriesList,
                                                         final Path dataPath)
     {
@@ -198,6 +237,9 @@ public class CountryLab
         }
     }
 
+    /*
+     * Writes country names in ascending order to the output file.
+     */
     private static void writeCountriesInAscendingOrder(final List<String> countriesList,
                                                        final Path dataPath)
     {
@@ -221,6 +263,9 @@ public class CountryLab
         }
     }
 
+    /*
+     * Writes country names in descending order to the output file.
+     */
     private static void writeCountriesInDescendingOrder(final List<String> countriesList,
                                                         final Path dataPath) throws IOException
     {
@@ -244,6 +289,9 @@ public class CountryLab
         }
     }
 
+    /*
+     * Writes unique first letters of country names to the output file.
+     */
     private static void writeUniqueFirstLetters(final List<String> countriesList,
                                                 final Path dataPath)
     {
@@ -268,6 +316,9 @@ public class CountryLab
         }
     }
 
+    /*
+     * Writes the total count of countries to the output file.
+     */
     private static void writeCountOfCountries(final List<String> countriesList,
                                               final Path dataPath)
     {
@@ -288,7 +339,9 @@ public class CountryLab
         }
     }
 
-    // add both if equal to maximum
+    /*
+     * Writes the longest country name(s) to the output file.
+     */
     private static void writeLongestCountryName(final List<String> countriesList,
                                               final Path dataPath)
     {
@@ -314,7 +367,9 @@ public class CountryLab
         }
     }
 
-    // add both if equal to minimum?
+    /*
+     * Writes the shortest country name(s) to the output file.
+     */
     private static void writeShortestCountryName(final List<String> countriesList,
                                                 final Path dataPath)
     {
@@ -340,6 +395,9 @@ public class CountryLab
         }
     }
 
+    /*
+     * Writes country names in uppercase to the output file.
+     */
     private static void writeCountriesInUpper(final List<String> countriesList,
                                               final Path dataPath)
     {
@@ -360,7 +418,9 @@ public class CountryLab
         }
     }
 
-
+    /*
+     * Writes country names that have more than one word to the output file.
+     */
     private static void writeCountriesWithMoreThanOneWord(final List<String> countriesList,
                                                           final Path dataPath)
     {
@@ -384,6 +444,9 @@ public class CountryLab
         }
     }
 
+    /*
+     * Writes country names along with their character counts to the output file.
+     */
     private static void writeCountriesToCharacterCount(final List<String> countriesList,
                                                        final Path dataPath)
     {
@@ -407,6 +470,9 @@ public class CountryLab
         }
     }
 
+    /*
+     * Writes whether there is a country name that starts with 'Z' to the file.
+     */
     private static void writeTrueIfNameStartsWithZ(final List<String> countriesList,
                                                    final Path dataPath)
     {
@@ -428,6 +494,9 @@ public class CountryLab
 
     }
 
+    /*
+     * Writes whether all country names are longer than 3 characters to the file.
+     */
     private static void writeAllNamesLongerThan3(final List<String> countriesList,
                                                  final Path dataPath)
     {
@@ -447,10 +516,5 @@ public class CountryLab
             e.printStackTrace();
         }
     }
-
-
-
-
-
 }
 
