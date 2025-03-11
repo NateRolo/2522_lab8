@@ -15,6 +15,12 @@ import java.util.stream.Stream;
  */
 public class CountryLab
 {
+    private static final int LONG_COUNTRY_NAME_MIN_LENGTH  = 10;
+    private static final int SHORT_COUNTRY_NAME_MAX_LENGTH        = 5;
+    private static final int COUNTRY_ENDS_WITH_LAND_MIN_LENGTH      = 4;
+    private static final int COUNTRY_ENDS_WITH_LAND_INDEX_OFFSET = 4;
+    private static final int COUNTRY_NAMES_MIN_LENGTH_3       = 3;
+
     /**
      * Main entry point for the program. Reads country names from a file,
      * ensures output directories exist, and calls methods to process
@@ -95,7 +101,7 @@ public class CountryLab
 
         filteredStream = list.stream()
                 .filter(Objects::nonNull)
-                .filter(str->!str.isBlank());
+                .filter(country->!country.isBlank());
 
         return filteredStream;
     }
@@ -109,7 +115,7 @@ public class CountryLab
         final List<String> longCountryNames;
 
         longCountryNames = filteredStream(countriesList)
-                .filter(str->str.length()>10)
+                .filter(country-> country.length() > LONG_COUNTRY_NAME_MIN_LENGTH)
                 .toList();
         try
         {
@@ -136,7 +142,7 @@ public class CountryLab
         final List<String> shortCountryNames;
 
         shortCountryNames = filteredStream(countriesList)
-                .filter(str->str.length()<5)
+                .filter(country-> country.length() < SHORT_COUNTRY_NAME_MAX_LENGTH)
                 .toList();
         try
         {
@@ -162,7 +168,7 @@ public class CountryLab
                                                     final Path dataPath)
     {
         final List<String> startsWithA = filteredStream(countriesList)
-                .filter(str->str.startsWith("A"))
+                .filter(country->country.startsWith("A"))
                 .toList();
         try
         {
@@ -188,9 +194,10 @@ public class CountryLab
                                                      final Path dataPath)
     {
         final List<String> endsWithLand = filteredStream(countriesList)
-                .filter(str->
-                    str.length() > 4 &&
-                            str.substring(str.length() - 4)
+                .filter(country->
+                    country.length() > COUNTRY_ENDS_WITH_LAND_MIN_LENGTH &&
+                            country.substring(country.length() - 
+                                              COUNTRY_ENDS_WITH_LAND_INDEX_OFFSET)
                                     .equalsIgnoreCase("land")
                         )
                 .toList();
@@ -218,7 +225,7 @@ public class CountryLab
                                                         final Path dataPath)
     {
         final List<String> containsUnited = filteredStream(countriesList)
-                .filter(str->str.contains("United"))
+                .filter(country->country.contains("United"))
                 .toList();
         try
         {
@@ -296,7 +303,7 @@ public class CountryLab
                                                 final Path dataPath)
     {
         final List<String> uniqueFirstLetters = filteredStream(countriesList)
-                .map(str->str.substring(0, 1))
+                .map(country->country.substring(0, 1))
                 .distinct()
                 .toList();
         try
@@ -351,7 +358,7 @@ public class CountryLab
                 .getAsInt();
 
         final List<String> longestCountryName = filteredStream(countriesList)
-                .filter(str->str.length() == longestCountryNameLength)
+                .filter(country->country.length() == longestCountryNameLength)
                 .toList();
         try
         {
@@ -379,7 +386,7 @@ public class CountryLab
                 .getAsInt();
 
         final List<String> longestCountryName = filteredStream(countriesList)
-                .filter(str->str.length() == shortestCountryNameLength)
+                .filter(country->country.length() == shortestCountryNameLength)
                 .toList();
         try
         {
@@ -425,7 +432,7 @@ public class CountryLab
                                                           final Path dataPath)
     {
         final List<String> countriesWithMoreThanOneWord = filteredStream(countriesList)
-                .filter(str->str.trim().contains(" "))
+                .filter(country->country.trim().contains(" "))
                 .toList();
         try
         {
@@ -451,7 +458,7 @@ public class CountryLab
                                                        final Path dataPath)
     {
         final List<String> countriesWithCharacterCount = filteredStream(countriesList)
-                .map(str->str + ": " + str.length())
+                .map(country->country + ": " + country.length())
                 .toList();
         try
         {
@@ -477,7 +484,7 @@ public class CountryLab
                                                    final Path dataPath)
     {
         final boolean countryStartsWithZ = filteredStream(countriesList)
-                .anyMatch(str->str.startsWith("Z"));
+                .anyMatch(country->country.startsWith("Z"));
 
         try
         {
@@ -501,7 +508,7 @@ public class CountryLab
                                                  final Path dataPath)
     {
         final boolean allNamesLongerThan3 = filteredStream(countriesList)
-                .allMatch(str->str.length()>3);
+                .allMatch(country->country.length()>COUNTRY_NAMES_MIN_LENGTH_3);
 
         try
         {
